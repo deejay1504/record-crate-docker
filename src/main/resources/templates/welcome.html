@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+<meta charset="UTF-8"/>
+    <title>Record Crate</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/record-crate.css" rel="stylesheet"/>
+
+    <script src="/js/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/jquery/jquery.easing.compatibility.js"></script>
+    <script src="/js/jquery/jquery.twbsPagination.min.js"></script>
+    <script src="/js/jquery/popper.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/animation-js/animatescroll.js"></script>
+    <script src="/js/highcharts/highcharts.js"></script>
+    <script src="/js/highcharts/exporting.js"></script>
+    <script src="/code-js/highChart.js"></script>
+    <script src="/code-js/home.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <a onclick="scrollSection('crate');" id="song-crate1" class="page-scroll" href="#home-song-crate" th:title="#{home.song.crate}"><img src="/images/record_crate.png"/></a>
+      <a onclick="scrollSection('graph');" class="page-scroll" href="#home-stats" th:title="#{home.song.statistics}"><img src="/images/graph.png"/></a>
+      <input id="song-add-id1" type="image" th:title="#{home.song.add}" src='/images/record.png'/>
+      <a onclick="scrollSection('options');" class="page-scroll" href="#home-song-options" th:title="#{home.song.admin}"><img src="/images/spanner.png"/></a>
+      <input id="song-export1" type="image" th:title="#{home.song.export}" src='/images/export.png'/>
+      <label id="homeHeading1" class="text-center date-label-style"></label>
+    </div>
+  </nav>
+
+  <section id="home-song-crate">
+    <div class="col-lg-12 text-center">
+      <a id="song-table-section"></a>
+      <h3 class="section-heading">Song Crate</h3>
+      <hr class="light"/>
+    </div>
+    <div class="col-xs-12 table-responsive">
+      <center>
+        <table>
+          <tbody>
+            <tr>
+              <td><input id="song-new-id" type="image" src='/images/small_record.png' title="Add a new song"/></td>
+              <td><input id="song-find-id" class="padding-between-hdr-cols" type="image" src='/images/search.png' title="Find a song in the database"/></td>
+              <td>
+                <label class="drop-down-style text-center text-space">Number of songs to display per page</label>
+                <select id="no-of-songs" data-toggle="tooltip" class="drop-down-style" title="Limit the number of songs displayed on a page"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+    </div>
+    <div class="col-xs-12 table-responsive">
+      <div class="parent-table-hdr-div">
+        <div class="table-hdr-left-div">
+          <span class="badge badge-color">
+            <label id="total-pages" class="total-label-style text-left"></label>
+          </span>
+          <label class="text-space"></label>
+          <label class="text-space"></label>
+          <span class="badge badge-color">
+            <label id="total-songs" class="total-label-style"></label>
+          </span>
+        </div>
+        <div class="table-hdr-right-div text-right">
+          <ul id="song-pagination1" class="sync-pagination pagination-sm pagination-song"></ul>
+        </div>
+      </div>
+      <center>
+        <div class="song-table-hdr-div">
+            <table id="song-table" class="table table-hover table-condensed table-striped table-layout song-table">
+              <thead>
+                <tr id="song-header" class="text-primary-black"></tr>
+              </thead>
+              <tbody id="song-body"></tbody>
+            </table>
+        </div>
+      </center>
+      <div class="parent-table-hdr-div">
+        <div class="table-hdr-left-div">
+        </div>
+        <div class="table-hdr-right-div text-right">
+          <ul id="song-pagination2" class="sync-pagination pagination-sm pagination-song"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="home-stats">
+    <div class="col-lg-12 text-center">
+      <h3 class="section-heading">Song Statistics</h3>
+      <hr class="light"/>
+      <br/>
+    </div>
+    <center>
+      <div class="parent-div text-center">
+        <div class="left-div">
+          <div id="songs-by-format"></div>
+        </div>
+        <div class="right-div">
+          <div id="songs-by-rpm"></div>
+        </div>
+      </div>
+    </center>
+  </section>
+
+  <section id="home-song-options">
+    <div class="col-lg-12 text-center">
+      <a id="song-option-section"></a>
+      <h3 class="section-heading">Options</h3>
+      <hr class="light"/>
+      <br/>
+    </div>
+    <center>
+      <div class="accordion-container">
+        <div class="clearfix"></div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Configuration Options
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <br/><br/>
+                <div class="col-lg-4 text-left">
+                  <div>
+                    <label class="form-label" title="Directory to export data">Export directory</label>
+                    <input id="song-export-dir" type="text" class="input-text-style" size="40" title="Directory to export data">
+                      <span class="glyphicon glyphicon-question-sign"
+                        onclick="showHelp(helpText['hdr_excel'], helpText['query_excel']);"/>
+                    </input>
+                  </div>
+                  <div>
+                    <label class="form-label" title="Name of the file to be exported">Export file name</label>
+                    <input id="song-export-name" type="text" class="short-input-text-style" title="Name of the file to be exported"/>
+                    <label class="search-form-label">.csv</label>
+                    <br/><br/>
+                  </div>
+                  <div>
+                    <label class="form-label" title="Song format">Song Format</label>
+                    <select id="song-format-admin" class="drop-down-style" title="Song format"/>
+                    <br/><br/>
+                  </div>
+                  <div class="text-center">
+                    <button id="song-options" type="button" class="btn btn-primary">Update</button>
+                    <br/><br/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                  Last Record Entered
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="panel-body">
+                <br/>
+                <h1 id="last-record" class="form-text-space"/>
+                <br/>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+              <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                Upcoming Gigs
+              </a>
+            </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+              <div class="panel-body">
+                <div class="songkick-panel">
+                  <input type="image" src="/images/songkick.png" onclick="window.open('http://songkick.com')" />
+                  <label id="songkickLabel" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFour">
+              <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseThree">
+                Useful Music Web Sites
+              </a>
+            </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+              <div class="panel-body">
+                <input type="image" src="/images/discogs.png" onclick="window.open('https://discogs.com')" />
+                <label class="form-text-space"/>
+                <input type="image" src="/images/song-bpm.png" onclick="window.open('https://songbpm.com')" />
+                <label class="form-text-space"/>
+                <input type="image" src="/images/who-sampled.png" onclick="window.open('https://whosampled.com')" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </center>
+  </section>
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <a onclick="scrollSection('crate');" id="song-crate2" class="page-scroll" href="#home-song-crate" th:title="#{home.song.crate}"><img src="/images/record_crate.png"/></a>
+      <a onclick="scrollSection('graph');" class="page-scroll" href="#home-stats" th:title="#{home.song.statistics}"><img src="/images/graph.png"/></a>
+      <input id="song-add-id2" type="image" th:title="#{home.song.add}" src='/images/record.png'/>
+      <a onclick="scrollSection('options');" class="page-scroll" href="#home-song-options" th:title="#{home.song.admin}"><img src="/images/spanner.png"/></a>
+      <input id="song-export2" type="image" th:title="#{home.song.export}" src='/images/export.png'/>
+      <label id="homeHeading2" class="text-center date-label-style"></label>
+    </div>
+  </nav>
+
+  <!-- Bootstrap modal dialog box for song details -->
+  <div id="song-modal-info" class="modal fade modal-wide modal-size" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-div" role="document">
+      <div class="modal-content">
+        <div class="col-lg-12 text-center">
+          <br/>
+          <h4>Song Details</h4><span class="glyphicon glyphicon-info-sign"></span>
+          <input type="image" src="/images/discogs.png" onclick="window.open('https://discogs.com')" />
+          <input type="image" src="/images/song-bpm.png" onclick="window.open('https://songbpm.com')" />
+        </div>
+        <div id="modal-message-div" class="modal-body">
+          <div class="col-lg-12 text-center">
+            <div>
+              <label class="form-label" title="Name of the Artist">Artist</label>
+              <input id="song-artist-id" type="text" class="input-text-style" title="Name of the Artist"/>
+              <a data-toggle="tooltip" class="tool-tip-link" data-html="true"
+                 data-original-title="Name of the Artist">
+                 <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
+              <input id="song-id" type="hidden"/>
+            </div>
+            <div>
+              <label class="form-label" title="Title of song">Song Title</label>
+              <input id="song-title-id" type="text" class="input-text-style" title="Title of song"/>
+            </div>
+            <div>
+              <label class="form-label" title="Name of record label">Record Label</label>
+              <input id="song-record-label-id" type="text" class="input-text-style" title="Name of record label"/>
+            </div>
+            <div>
+              <label class="form-label" title="Year of release">Year</label>
+              <input id="song-year-id" type="text" class="input-text-style" title="Year of release"/>
+            </div>
+            <div>
+              <label class="form-label" title="Number of copies">Copies</label>
+              <input id="song-copies-id" type="text" class="input-text-style" title="Number of copies"/>
+            </div>
+            <div>
+              <label class="form-label" title="Genre of song">Genre</label>
+              <input id="song-genre-id" type="text" class="input-text-style" title="Genre"/>
+            </div>
+            <div>
+              <label class="form-label" title="Number of Song BPMs">Song BPM</label>
+              <input id="song-bpm-id" type="text" class="input-text-style" title="Beats per minute"/>
+              <br/><br/>
+            </div>
+          </div>
+          <div class="parent-table-hdr-div col-lg-12">
+            <label class="form-label" title="Song duration">Duration</label>
+            <select id="song-hh-id" class="drop-down-style" title="Duration of song in hours"/>
+            <select id="song-mm-id" class="drop-down-style" title="Duration of song in minutes"/>
+            <select id="song-ss-id" class="drop-down-style" title="Duration of song in seconds"/>
+            <label class="form-label" title="Song format">Song Format</label>
+            <select id="song-format-id" class="drop-down-style" title="Song format"/>
+            <br/><br/>
+          </div>
+          <div class="parent-table-hdr-div col-lg-12">
+            <label class="form-label" title="A side or B side">Record Side</label>
+            <select id="song-side-id" class="drop-down-style" title="A side, AA side or B side"/>
+            <label class="padding-between-cols"/>
+            <label class="form-label" title="Song Speed">Song RPM</label>
+            <label class="text-space"/>
+            <label class="text-space"/>
+            <label class="text-space"/>
+            <select id="song-rpm-id" class="drop-down-style" title="Revolutons per miniute"/>
+          </div>
+          <div class="modal-footer">
+            <button id="add-song" type="button" class="btn btn-info">Add Song</button>
+            <button id="update-song" type="button" class="btn btn-info">Update Song</button>
+            <button id="delete-song" type="button" class="btn btn-danger">Delete Song</button>
+            <button id="cancel-song" type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap modal dialog box for displaying errors and warnings -->
+  <div id="modal-alert" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="modal-title" class="modal-title"></h4>
+        </div>
+        <div id="modal-msg-body" class="modal-body">
+            <label id="modal-msg1"></label>
+            <input id="hidden-field" type="hidden"/>
+        </div>
+        <div class="modal-footer">
+          <button id="ok-button" type="button" class="btn btn-success">OK</button>
+          <button id="delete-button" type="button" class="btn btn-danger">Delete</button>
+          <button id="cancel-button" type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap modal dialog box for song search -->
+  <div id="find-song-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="modal-title" class="modal-title">Find a song</h4>
+        </div>
+        <div id="modal-msg-body" class="modal-body">
+            <label class="search-form-label">Find song by</label>
+            <select id="find-song-id" class="drop-down-style"/>
+            <br/><br/>
+            <label id="find-label" class="search-label"></label>
+            <input id="find-song-field" type="text" class="input-text-style"/>
+        </div>
+        <div class="modal-footer">
+          <button id="find-button" type="button" class="btn btn-success">OK</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
