@@ -144,7 +144,7 @@ body {
 }
 
 .padding-between-cols {
-    padding:0 0 0 30px;
+    padding:0 0 0 52px;
 }
 
 .padding-between-hdr-cols {
@@ -153,6 +153,10 @@ body {
 
 .text-space {
     text-indent: 2em;
+}
+
+.record-side-space {
+    text-indent: 4em;
 }
 
 .form-text-space {
