@@ -137,7 +137,7 @@ $(document).ready(function() {
     $('#song-export2').click(function() {
       exportSongs();
     });
-
+    
     getAllSongs = true;
     initialiseSongFormat($('#song-format-admin'));
     initialiseAdminSongOptions();
@@ -352,6 +352,7 @@ function saveSong(songDetails, actionType) {
 function displayAlertBox(msgType, msg) {
   $('#modal-msg1').empty();
   $('#modal-msg1').html(msg);
+  var timeout = (msg.indexOf('Are you sure you want to delete') >=0) ? 15000 : 3000;
   var containsMessage = false;
   $( "#modal-msg-body label").each(function(i, lbl) {
      if ($(lbl).text() != '') {
@@ -359,11 +360,11 @@ function displayAlertBox(msgType, msg) {
      }
   });
   if (containsMessage) {
-    showAlerts(msgType);
+    showAlerts(msgType, timeout);
   }
 }
 
-function showAlerts(title){
+function showAlerts(title, timeout) {
     $(".modal-header").removeClass('red-background');
 		$(".modal-header").removeClass('yellow-background');
 		$(".modal-header").removeClass('light-blue-background');
@@ -375,7 +376,11 @@ function showAlerts(title){
 			$(".modal-header").addClass('light-blue-background');
 		}
     $('#modal-title').text(title);
-    $('#modal-alert').modal('show');
+    $('#modal-alert').modal('show').on("shown.bs.modal", function() {
+    	window.setTimeout(function() {
+    		$('#modal-alert').modal('hide');
+    	}, timeout);
+    });
 }
 
 function getTodaysDate() {
@@ -623,8 +628,11 @@ function initialiseSongKick() {
   eDate.setDate(sDate.getDate() + 30);
   var sMonth = (sDate.getMonth() + 1) < 10 ? '0' + (sDate.getMonth() + 1) : (sDate.getMonth() + 1);
   var eMonth = (eDate.getMonth() + 1) < 10 ? '0' + (eDate.getMonth() + 1) : (eDate.getMonth() + 1);
-  var minDate = sDate.getFullYear() + '-' + sMonth + '-' + sDate.getDate();
-  var maxDate = eDate.getFullYear() + '-' + eMonth + '-' + eDate.getDate();
+  var sDay   = (sDate.getDate() < 10) ? '0' + sDate.getDate() : sDate.getDate();
+  var eDay   = (eDate.getDate() < 10) ? '0' + eDate.getDate() : eDate.getDate();
+
+  var minDate = sDate.getFullYear() + '-' + sMonth + '-' + sDay;
+  var maxDate = eDate.getFullYear() + '-' + eMonth + '-' + eDay;
   var songKickUrl = 'http://api.songkick.com/api/3.0/events.json?min_date=' + minDate +
     '&max_date=' + maxDate + '&location=clientip&apikey=NGEqcVHMhrUb1qRu';
   $("#songkickLabel").empty();
