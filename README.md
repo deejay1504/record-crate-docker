@@ -6,6 +6,7 @@ A Dockerized version of the spring-boot app using tomcat and MySql.
 Performs CRUD operations on a music database.
 
 ###1. Technologies used
+* Java 11
 * Spring Boot 1.4.3
 * Maven 4
 * Docker 2
