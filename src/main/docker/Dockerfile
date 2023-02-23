@@ -3,7 +3,7 @@
 ############################################################
 
 # Start with a base image containing Java runtime
-FROM java:8
+FROM openjdk:11
 
 # Add Maintainer Info
 LABEL maintainer="Dee Jay"
