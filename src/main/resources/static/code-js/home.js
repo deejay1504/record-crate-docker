@@ -233,7 +233,8 @@ function exportSongs() {
       contentType: 'application/json'
   }).done(function (data, textStatus) {
     if (data) {
-      var dirName = $('#song-export-dir').val() + $('#song-export-name').val();
+      var songExportDir = $('#song-export-dir').val().slice(-1) == '/' ? $('#song-export-dir').val() : $('#song-export-dir').val() + '/';
+      var dirName = songExportDir + $('#song-export-name').val();
       setCloseButtonAlert();
       displayAlertBox('Info', 'Export to ' + dirName + ' completed!');
     } else {

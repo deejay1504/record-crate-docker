@@ -43,7 +43,7 @@ public class SongConfigService {
 	public Boolean updateSongConfig(Map<?, ?> adminData) {
 		String dirName = (String) adminData.get(Constants.SONG_CONFIG.DIR_NAME);
 		File fileName = new File(dirName);
-		Boolean dirOk = (fileName.isDirectory()) ? true : false;
+		Boolean dirOk = fileName.isDirectory();
 		if (dirOk) {
 			Iterable<SongConfig> allSongConfigs = songConfigRepository.findAll();
 			allSongConfigs.forEach(songConfig -> {
@@ -56,9 +56,9 @@ public class SongConfigService {
 	}
 
 	public Boolean export() {
-		SongConfig songConfig = songConfigRepository.findOne(new Long(1));
+		SongConfig songConfig = songConfigRepository.findOne(1L);
 		String exportDir = songConfig.getPropertyValue();
-		songConfig = songConfigRepository.findOne(new Long(2));
+		songConfig = songConfigRepository.findOne(2L);
 		String exportName = songConfig.getPropertyValue();
 		StringBuilder fileName = new StringBuilder();
 		fileName.append(exportDir);
@@ -67,7 +67,7 @@ public class SongConfigService {
 		}
 		fileName.append(exportName);
 		
-		boolean exportOk = false;
+		boolean exportOk;
 		StringBuilder sb = new StringBuilder();
 		List<Song> allSongs = songRepository.findAllSongs();
 		allSongs.forEach(song -> {
